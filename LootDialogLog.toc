@@ -1,0 +1,10 @@
+## Interface: 120001
+## Title: LootDialogLog
+## Notes: 루팅한 아이템과 NPC 대화를 별도의 창에 표시합니다.
+## SavedVariables: LootDialogLogDB
+## Version: 1.0.0
+## Author: Gemini
+
+Localization.lua
+Main.lua
+Options.lua
