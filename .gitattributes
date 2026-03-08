@@ -1,0 +1,6 @@
+# 배포용 ZIP 파일에서 제외할 목록
+.github/ export-ignore
+.git/ export-ignore
+.gitattributes export-ignore
+README.md export-ignore
+LICENSE export-ignore
