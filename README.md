@@ -73,7 +73,9 @@ LootDialogLog는 루팅한 아이템 정보와 NPC의 대화를 별도의 독립
 - **[아이템]**: 루팅 기록만 표시.
 - **[삭제]**: 모든 기록 초기화.
 
-![메인 프레임 예시](.github/images/main_frame.png)
+![메인 창(전체보기)](.github/images/mainframe_all.png)
+![메인 창(NPC 대화)](.github/images/mainframe_npc.png)
+![메인 창(템 루팅)](.github/images/mainframe_loot.png)
 
 #### 3. 자동 삭제 및 스크롤
 - **시간 기반 삭제**: 설정한 시간(1, 3, 5, 10분) 후 메시지 자동 제거.
