@@ -1,5 +1,5 @@
 local addonName, addonTable = ...
-local L = addonTable
+local L = addonTable.L
 
 -- 기본 설정값
 local defaultDB = {
@@ -32,20 +32,20 @@ frame:SetFontObject(ChatFontNormal)
 frame:SetJustifyH("LEFT")
 
 -- 필터 상태 (all, npc, item)
-L.FilterMode = "all"
+addonTable.FilterMode = "all"
 
 -- 버튼 업데이트 함수
 local function UpdateFilterButtons()
     -- 모든 버튼 초기화
     local buttons = {
-        all = L.btnAll,
-        npc = L.btnNPC,
-        item = L.btnItem
+        all = addonTable.btnAll,
+        npc = addonTable.btnNPC,
+        item = addonTable.btnItem
     }
     
     for id, btn in pairs(buttons) do
         if btn then
-            if id == L.FilterMode then
+            if id == addonTable.FilterMode then
                 btn:LockHighlight() -- 버튼 강조 고정
                 btn:GetFontString():SetTextColor(1, 0.82, 0) -- 노란색 텍스트
             else
@@ -82,10 +82,10 @@ header:SetBackdropColor(0, 0, 0, 0.8)
 header:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 
 -- 버튼들 추가
-L.btnAll = CreateFilterButton(L["TAB_ALL"], "LEFT", header, 2, 0, function() L.FilterMode = "all"; L.RefreshLog() end)
-L.btnNPC = CreateFilterButton(L["TAB_NPC"], "LEFT", L.btnAll, 47, 0, function() L.FilterMode = "npc"; L.RefreshLog() end)
-L.btnItem = CreateFilterButton(L["TAB_ITEM"], "LEFT", L.btnNPC, 47, 0, function() L.FilterMode = "item"; L.RefreshLog() end)
-local btnClear = CreateFilterButton(L["TAB_CLEAR"], "RIGHT", header, -2, 0, function() L.LogEntries = {}; L.RefreshLog() end)
+addonTable.btnAll = CreateFilterButton(L["TAB_ALL"], "LEFT", header, 2, 0, function() addonTable.FilterMode = "all"; addonTable.RefreshLog() end)
+addonTable.btnNPC = CreateFilterButton(L["TAB_NPC"], "LEFT", addonTable.btnAll, 47, 0, function() addonTable.FilterMode = "npc"; addonTable.RefreshLog() end)
+addonTable.btnItem = CreateFilterButton(L["TAB_ITEM"], "LEFT", addonTable.btnNPC, 47, 0, function() addonTable.FilterMode = "item"; addonTable.RefreshLog() end)
+local btnClear = CreateFilterButton(L["TAB_CLEAR"], "RIGHT", header, -2, 0, function() addonTable.LogEntries = {}; addonTable.RefreshLog() end)
 
 -- 초기 상태 적용
 UpdateFilterButtons()
@@ -101,20 +101,20 @@ frame:SetScript("OnMouseWheel", function(self, delta)
 end)
 
 -- 로그 항목 저장 테이블
-L.LogEntries = {}
+addonTable.LogEntries = {}
 
 local function RefreshLog()
     frame:Clear()
     -- 아래에서 위로(오래된 것부터) 추가해야 InsertMode("TOP")에 의해 최신이 위로 감
-    for i = #L.LogEntries, 1, -1 do
-        local entry = L.LogEntries[i]
+    for i = #addonTable.LogEntries, 1, -1 do
+        local entry = addonTable.LogEntries[i]
         local show = false
         
-        if L.FilterMode == "all" then
+        if addonTable.FilterMode == "all" then
             show = true
-        elseif L.FilterMode == "npc" and entry.isNPC then
+        elseif addonTable.FilterMode == "npc" and entry.isNPC then
             show = true
-        elseif L.FilterMode == "item" and not entry.isNPC then
+        elseif addonTable.FilterMode == "item" and not entry.isNPC then
             show = true
         end
         
@@ -123,19 +123,19 @@ local function RefreshLog()
         end
     end
 end
-L.RefreshLog = RefreshLog
+addonTable.RefreshLog = RefreshLog
 
 local function AddLogMessage(msg, isNPC)
     -- 옵션에서 꺼져있으면 기록조차 하지 않음
     if isNPC and not LootDialogLogDB.showNPC then return end
     
-    table.insert(L.LogEntries, 1, { text = msg, timestamp = time(), isNPC = isNPC })
-    if #L.LogEntries > 100 then
-        table.remove(L.LogEntries)
+    table.insert(addonTable.LogEntries, 1, { text = msg, timestamp = time(), isNPC = isNPC })
+    if #addonTable.LogEntries > 100 then
+        table.remove(addonTable.LogEntries)
     end
     
     -- 현재 필터 모드에 맞는 경우에만 화면에 즉시 출력
-    L.RefreshLog()
+    addonTable.RefreshLog()
 end
 
 -- 주기적으로 오래된 메시지 삭제
@@ -144,15 +144,15 @@ C_Timer.NewTicker(10, function()
     
     local currentTime = time()
     local changed = false
-    for i = #L.LogEntries, 1, -1 do
-        if currentTime - L.LogEntries[i].timestamp > LootDialogLogDB.expirationTime then
-            table.remove(L.LogEntries, i)
+    for i = #addonTable.LogEntries, 1, -1 do
+        if currentTime - addonTable.LogEntries[i].timestamp > LootDialogLogDB.expirationTime then
+            table.remove(addonTable.LogEntries, i)
             changed = true
         end
     end
     
     if changed then
-        RefreshLog()
+        addonTable.RefreshLog()
     end
 end)
 
@@ -225,7 +225,7 @@ local function UpdateFrameStyle()
     frame:SetBackdropColor(0, 0, 0, LootDialogLogDB.bgAlpha or 0.5)
     if LootDialogLogDB.isLocked then resizeButton:Hide() else resizeButton:Show() end
 end
-L.UpdateFrameStyle = UpdateFrameStyle
+addonTable.UpdateFrameStyle = UpdateFrameStyle
 
 -- 드래그 및 슬래시
 frame:RegisterForDrag("LeftButton")
